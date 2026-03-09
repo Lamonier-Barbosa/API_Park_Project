@@ -5,6 +5,7 @@ import com.project.park_api.service.UsuarioService;
 import com.project.park_api.web.records.UsuarioCreate;
 import com.project.park_api.web.records.UsuarioResponse;
 import com.project.park_api.web.records.UsuarioSenha;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponse> create(@RequestBody UsuarioCreate usuarioCreate){
+    public ResponseEntity<UsuarioResponse> create(@Valid @RequestBody UsuarioCreate usuarioCreate){
         Usuario user = usuarioCreate.toEntity();
         Usuario userSaved = usuarioService.salvar(user);
         UsuarioResponse userResponse = UsuarioResponse.fromEntity(userSaved);
@@ -39,7 +40,7 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UsuarioResponse> updatePassword(@PathVariable Long id, @RequestBody UsuarioSenha usuarioSenha){
+    public ResponseEntity<UsuarioResponse> updatePassword(@Valid @PathVariable Long id, @RequestBody UsuarioSenha usuarioSenha){
         Usuario user = usuarioSenha.toEntity();
         Usuario senhaAtualizada = usuarioService.editarSenha(id, usuarioSenha.senha(), usuarioSenha.novaSenha(), usuarioSenha.confirmaSenha());
         UsuarioResponse userResponse = UsuarioResponse.fromEntity(user);
