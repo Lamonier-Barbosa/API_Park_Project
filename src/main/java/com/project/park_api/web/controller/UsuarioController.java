@@ -1,6 +1,7 @@
 package com.project.park_api.web.controller;
 
 import com.project.park_api.entity.Usuario;
+import com.project.park_api.exception.PasswordInvalidException;
 import com.project.park_api.service.UsuarioService;
 import com.project.park_api.web.records.UsuarioCreate;
 import com.project.park_api.web.records.UsuarioResponse;
@@ -40,10 +41,8 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UsuarioResponse> updatePassword(@Valid @PathVariable Long id, @RequestBody UsuarioSenha usuarioSenha){
-        Usuario user = usuarioSenha.toEntity();
+    public ResponseEntity<UsuarioResponse> updatePassword(@Valid @PathVariable Long id, @RequestBody UsuarioSenha usuarioSenha) throws PasswordInvalidException {
         Usuario senhaAtualizada = usuarioService.editarSenha(id, usuarioSenha.senha(), usuarioSenha.novaSenha(), usuarioSenha.confirmaSenha());
-        UsuarioResponse userResponse = UsuarioResponse.fromEntity(user);
 
         return ResponseEntity.noContent().build();
     }
